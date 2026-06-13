@@ -68,7 +68,7 @@ function DetailPanel({ customer, onClose }: { customer: Customer; onClose: () =>
       {/* Backdrop */}
       <div
         onClick={onClose}
-        style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.25)", backdropFilter: "blur(3px)", zIndex: 40, animation: "fadeIn 0.2s ease" }}
+        style={{ position: "fixed", inset: 0, background: "transparent", backdropFilter: "blur(3px)", zIndex: 40, animation: "fadeIn 0.2s ease" }}
       />
 
       {/* Slide-in panel */}
