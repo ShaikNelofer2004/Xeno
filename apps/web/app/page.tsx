@@ -105,19 +105,7 @@ export default async function LandingPage() {
             <a href="#features" style={{ fontSize: 14, fontWeight: 600, color: "#6D28D9", textDecoration: "none" }}>See how it works ↓</a>
           </div>
 
-          {/* Trust badges */}
-          <div style={{ display: "flex", alignItems: "center", gap: 20, marginTop: 40, paddingTop: 32, borderTop: "1px solid #f0f0f0" }}>
-            {[
-              { icon: "⚡", label: "Gemini AI" },
-              { icon: "🔒", label: "Clerk Auth" },
-              { icon: "🗄️", label: "Supabase" },
-              { icon: "📡", label: "4 Channels" },
-            ].map(b => (
-              <div key={b.label} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 500, color: "#6b7280" }}>
-                <span>{b.icon}</span> {b.label}
-              </div>
-            ))}
-          </div>
+
         </div>
 
         {/* Right — Dashboard Mockup */}
