@@ -24,6 +24,31 @@ The CRM uses a **Gemini ReAct Agent** to reason, segment the audience, draft per
 
 XenoCRM operates on a decoupled, microservice-inspired monorepo architecture. This design cleanly separates the user interface, the core business logic, and external integrations.
 
+```mermaid
+graph TD
+    User([Marketer]) -->|Interacts| Web[Frontend Web App]
+    Web -->|HTTP REST / SSE| API[Core API Backend]
+    API -->|Reads/Writes| DB[(Supabase PostgreSQL)]
+    API -->|POST /send| Stub[Vendor Stub Simulator]
+    Stub -->|Async Webhooks| API
+    
+    subgraph apps/web
+        Web
+    end
+    
+    subgraph apps/api
+        API
+    end
+    
+    subgraph apps/stub
+        Stub
+    end
+    
+    subgraph packages/shared
+        DB
+    end
+```
+
 ### 1. The Frontend Application (`apps/web/`)
 * **Technology:** Next.js 14 App Router, React, Tailwind CSS, Clerk Authentication.
 * **Role:** Acts as the primary control surface for the marketer. 
@@ -57,6 +82,32 @@ XenoCRM operates on a decoupled, microservice-inspired monorepo architecture. Th
 ## 🧠 Agent Architecture (Gemini ReAct Loop)
 
 The most advanced component of XenoCRM is the Autonomous Agent, built on the **ReAct (Reason + Act)** paradigm using the `@google/genai` SDK. It doesn't just execute predefined scripts; it "thinks" about the problem and dynamically chooses which tools to execute.
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Web
+    participant API as Core API (Agent)
+    participant Gemini as Gemini 1.5 Flash
+    participant Tools as Local Tools (DB/Segment)
+
+    User->>Web: Submits Goal ("Send win-back campaign")
+    Web->>API: POST /api/agent/run
+    API-->>Web: EventSource Connection (SSE)
+    
+    loop ReAct Loop
+        API->>Gemini: Observe State & Prompt
+        Gemini-->>API: Think (Internal Monologue)
+        API-->>Web: SSE Chunk (Live Stream Thoughts)
+        Gemini-->>API: Act (Tool Call: e.g. queryDatabase)
+        API->>Tools: Execute natively
+        Tools-->>API: Return JSON Result
+        API->>Gemini: Append Tool Result to Context
+    end
+
+    Gemini-->>API: Final Answer (Goal Completed)
+    API-->>Web: SSE Close (Campaign Launched)
+```
 
 ### The ReAct Loop
 When the marketer submits a prompt, the Agent enters a `while(true)` loop inside `apps/api/src/agent/runner.ts`:
