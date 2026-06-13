@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef, Suspense } from "react";
 import { api } from "@/lib/api";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -771,7 +771,7 @@ function ConfirmModal({
 }
 
 /* ─── Main Page ──────────────────────────────────────────────────── */
-export default function CampaignsPage() {
+function CampaignsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initSegId = searchParams.get("segmentId");
@@ -1049,5 +1049,13 @@ export default function CampaignsPage() {
       )}
       <style>{`@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }`}</style>
     </div>
+  );
+}
+
+export default function CampaignsPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: 40, textAlign: "center", color: "#888", fontSize: 14 }}>Loading campaigns...</div>}>
+      <CampaignsPageContent />
+    </Suspense>
   );
 }
