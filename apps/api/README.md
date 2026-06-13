@@ -34,8 +34,40 @@ The backend exposes a webhook endpoint at `/api/receipt` to listen for delivery 
 * It drops any out-of-order webhooks (e.g., receiving a "delivered" event *after* a "read" event due to network latency).
 * Once a "clicked" event occurs, it probabilistically simulates an order placement and attributes revenue back to the campaign.
 
-### 5. **Robust Chunking**
-To ensure the CRM can handle large segments without hitting HTTP or URL length limits (a common pitfall of URL-based `in()` queries), the API aggressively chunks large database reads and inserts into manageable sizes.
+## 📡 API Routes Reference
+
+### Customers (`/api/customers`)
+* `GET /api/customers` - Fetch paginated customers.
+* `GET /api/customers/stats` - Fetch aggregate stats (total revenue, tiers).
+* `GET /api/customers/cities` - Fetch unique cities for filtering.
+* `GET /api/customers/rfm/scatter` - Fetch RFM coordinates for scatter plots.
+* `GET /api/customers/:id` - Fetch a single customer's full profile.
+* `POST /api/customers/ingest` - Ingest new customers.
+
+### Segments (`/api/segments`)
+* `GET /api/segments` - Fetch all saved audience segments.
+* `POST /api/segments` - Create a new segment.
+* `POST /api/segments/preview` - Preview how many customers match a set of rules.
+* `GET /api/segments/:id/customers` - Get the actual customers inside a segment.
+* `DELETE /api/segments/:id` - Delete a segment.
+
+### Campaigns (`/api/campaigns`)
+* `GET /api/campaigns` - Fetch all campaigns.
+* `POST /api/campaigns` - Create a draft campaign.
+* `GET /api/campaigns/:id` - Fetch details of a single campaign.
+* `GET /api/campaigns/:id/stats` - Fetch funnel stats (sent, delivered, opened, etc).
+* `GET /api/campaigns/:id/communications` - Fetch the individual delivery logs for recipients.
+* `POST /api/campaigns/:id/send` - Launch a campaign and dispatch to the vendor stub.
+* `DELETE /api/campaigns/:id` - Delete a campaign and its associated communications.
+
+### AI Agent (`/api/agent`)
+* `POST /api/agent/run` - Start a new autonomous agent session with a prompt goal.
+* `GET /api/agent/runs` - List all past agent runs.
+* `GET /api/agent/runs/:id` - Fetch details of a specific agent run.
+* `GET /api/agent/stream/:runId` - **(SSE)** Connect to the live Server-Sent Events stream for real-time thought logs.
+
+### Webhooks (`/api/receipt`)
+* `POST /api/receipt` - The webhook callback endpoint for the Vendor Stub to report delivery status changes.
 
 ## 🚀 Running the API
 
@@ -46,10 +78,3 @@ To ensure the CRM can handle large segments without hitting HTTP or URL length l
 npm run dev
 ```
 4. The server runs on port `3001` by default.
-
-## 📂 Directory Structure
-
-* `src/index.ts` — Express app configuration and routing map.
-* `src/db.ts` — Supabase client initialization.
-* `src/routes/` — Individual routers for customers, campaigns, segments, agent streaming, and receipt webhooks.
-* `src/agent/runner.ts` — The ReAct agent execution loop and custom tool definitions.

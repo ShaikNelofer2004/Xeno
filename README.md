@@ -20,16 +20,35 @@ The CRM uses a **Gemini ReAct Agent** to reason, segment the audience, draft per
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ System Architecture & Services
 
 The project is structured as an npm monorepo:
 
-* `apps/web/` — **Next.js 14 App Router** (Frontend, Tailwind CSS, Clerk Auth)
-* `apps/api/` — **Express.js + TypeScript** (Core CRM Backend, PostgreSQL/Supabase, Gemini SDK)
-* `apps/stub/` — **Express.js + TypeScript** (External Vendor Delivery Simulator)
-* `packages/shared/` — **Shared Types & DB Scripts** (Seed script, SQL schema)
+### 1. `apps/web/` — Frontend Web App
+* **Stack:** Next.js 14, Tailwind CSS, Clerk Auth, Lucide Icons.
+* **Purpose:** The main user interface for the CRM. Offers a Dashboard, Audience Manager, interactive Campaign Builder, live delivery funnels, and an AI chat interface.
+* **Read more:** `apps/web/README.md`
 
-*(Please check the `README.md` files in each specific app folder for detailed technical documentation of each service.)*
+### 2. `apps/api/` — Core Backend API
+* **Stack:** Express.js, TypeScript, PostgreSQL (Supabase), Gemini SDK.
+* **Purpose:** Handles campaign creation, database queries, webhook processing, and hosts the autonomous Gemini ReAct loop.
+* **API Routes (Summary):**
+  * `/api/customers` - Data ingestion & retrieval
+  * `/api/segments` - Audience segmentation logic
+  * `/api/campaigns` - Campaign CRUD and launching (`/send`)
+  * `/api/agent` - Autonomous reasoning & live streaming (`/stream/:runId`)
+  * `/api/receipt` - The primary webhook endpoint.
+* **Read more:** `apps/api/README.md`
+
+### 3. `apps/stub/` — Vendor Delivery Stub
+* **Stack:** Express.js, TypeScript
+* **Purpose:** An external vendor simulator perfectly mimicking delivery networks (Twilio, WhatsApp API). Introduces jitter, simulates probabilistic funnels (delivered, bounced, read), and asynchronously fires webhooks back to the CRM API.
+* **API Routes (Summary):**
+  * `POST /send` - Receives massive outbound batches, returns 202 instantly, and processes webhooks in the background.
+* **Read more:** `apps/stub/README.md`
+
+### 4. `packages/shared/` — Shared Infrastructure
+* **Purpose:** Contains the shared PostgreSQL schema (`schema.sql`) and a robust data seed script (`seed.js`) that populates the DB with hundreds of generated customers, orders, and calculated RFM metrics.
 
 ---
 

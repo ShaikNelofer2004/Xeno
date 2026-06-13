@@ -39,6 +39,22 @@ The core autonomous feature of XenoCRM. An interactive chat interface where mark
 ### 7. **Churn Health Dashboard**
 Highlights customers who are "At Risk" or "Churning" based on their exact recency metrics and past order history. Features a convenient "Auto-Winback" quick-action button that automatically delegates a win-back campaign to the AI Agent.
 
+## 📡 API Integration Reference
+
+The frontend fetches data directly from the **Core API Backend**. The primary routes utilized by this web application include:
+
+* **Agent API:**
+  * `POST /api/agent/run` - Used to trigger a new AI session.
+  * `GET /api/agent/stream/:runId` - Streamed via EventSource in the Agent Chat UI.
+* **Campaigns API:**
+  * `GET /api/campaigns` & `GET /api/campaigns/:id` - Used in the Dashboard and Campaigns table.
+  * `POST /api/campaigns/:id/send` - Triggered at the end of the Campaign Wizard.
+* **Customers API:**
+  * `GET /api/customers` - Fetches the main Audience table (paginated).
+  * `GET /api/customers/stats` - Powers the Dashboard widgets.
+* **Segments API:**
+  * `POST /api/segments` - Used by the Create Segment modal.
+
 ## 🚀 Running the App
 
 1. Ensure your `.env.local` is set up with Clerk keys and the API URL (see root `README.md`).

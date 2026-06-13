@@ -25,6 +25,24 @@ The Stub doesn't just return "delivered" for every message. It programmatically 
 ### 3. **Fire-and-Forget Architecture**
 The `/send` endpoint immediately accepts the payload and closes the HTTP connection with a `202 Accepted` response. All webhook callbacks are then fired entirely in the background.
 
+## 📡 API Routes Reference
+
+### `POST /send`
+The primary endpoint where the core CRM API sends outbound messages. 
+
+**Request Payload Example:**
+```json
+{
+  "channel": "whatsapp",
+  "recipients": [
+    { "id": "uuid-1", "to": "+123456789", "content": "Hello World!" },
+    { "id": "uuid-2", "to": "+987654321", "content": "Hello World!" }
+  ]
+}
+```
+
+**Response:** Returns `202 Accepted` immediately, and begins processing webhooks asynchronously in the background.
+
 ## 🚀 Running the Stub
 
 1. Ensure your `.env` is set up with the CRM receipt URL (see root `README.md`).
@@ -34,7 +52,3 @@ The `/send` endpoint immediately accepts the payload and closes the HTTP connect
 npm run dev
 ```
 4. The server runs on port `4000` by default.
-
-## 📂 Architecture
-
-* **`src/index.ts`**: The main Express server containing the `/send` endpoint and the heavily asynchronous `processBatch` loop.
