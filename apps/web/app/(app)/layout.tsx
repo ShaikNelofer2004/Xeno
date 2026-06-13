@@ -114,7 +114,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </div>
         </header>
 
-        <div style={{ flex: 1 }}>
+        <div className="animate-slide-up" style={{ flex: 1 }}>
           {children}
         </div>
       </main>
