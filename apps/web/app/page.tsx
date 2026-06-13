@@ -308,7 +308,7 @@ export default async function LandingPage() {
             }}><img src="/logo.png" alt="Xeno Logo" style={{ width: "100%", height: "100%", objectFit: "cover" }} /></div>
             <span style={{ fontWeight: 700, color: "#0f0a1e", fontSize: 15 }}>XenoCRM</span>
           </div>
-          <p style={{ fontSize: 13, color: "#9ca3af" }}>Built for Xeno Engineering Internship Assignment · 2026</p>
+
           <div style={{ display: "flex", gap: 20 }}>
             {["Features", "Dashboard", "Sign In"].map(l => (
               <a key={l} href="#" style={{ fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>{l}</a>
