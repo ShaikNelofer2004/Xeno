@@ -1,0 +1,15 @@
+{
+  "name": "xenocrm",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace=apps/web",
+    "dev:api": "npm run dev --workspace=apps/api",
+    "dev:stub": "npm run dev --workspace=apps/stub",
+    "seed": "npm run seed --workspace=packages/shared"
+  }
+}
