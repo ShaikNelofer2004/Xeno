@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import {
   TrendingUp, Users, Megaphone, DollarSign, Zap, ArrowRight,
-  ShoppingBag, Activity, Award, BarChart2, Target, ChevronUp,
+  ShoppingBag, Activity, Award, BarChart2, Target, ChevronUp, IndianRupee,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -215,7 +215,7 @@ export default function DashboardPage() {
                         ? `₹${(stats.total_revenue / 1000).toFixed(0)}k`
                         : "—",
             sub:      "Lifetime spend",
-            icon:     DollarSign,
+            icon:     IndianRupee,
             color:    "#f59e0b",
             change:   "+8%",
             positive: true,
