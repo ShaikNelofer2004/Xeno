@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SignInButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
+import { Brain, Target, MessageSquare, Globe, BarChart, RefreshCcw } from "lucide-react";
 
 export default async function LandingPage() {
   const { userId } = await auth();
@@ -208,39 +209,39 @@ export default async function LandingPage() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
           {[
             {
-              icon: "🧠",
-              title: "Gemini ReAct Agent",
-              desc: "An autonomous AI loop that reasons, acts, and observes — planning campaigns end-to-end without manual steps.",
+              icon: Brain,
+              title: "AI-Powered Campaigns",
+              desc: "Let AI plan and execute your marketing campaigns from start to finish with zero manual effort.",
               color: "#6D28D9",
             },
             {
-              icon: "🎯",
-              title: "Smart Segmentation",
-              desc: "Filter customers by RFM metrics, tier, city, recency, and spend. The agent picks the perfect audience automatically.",
+              icon: Target,
+              title: "Audience Targeting",
+              desc: "Automatically filter and segment your customers based on their purchase history, location, and loyalty.",
               color: "#4F46E5",
             },
             {
-              icon: "✍️",
-              title: "Auto Copywriting",
-              desc: "Gemini drafts personalized messages for each channel — WhatsApp, SMS, Email, RCS — with the right tone and length.",
+              icon: MessageSquare,
+              title: "Personalized Copywriting",
+              desc: "Automatically generate tailored, highly-converting messages for every customer in your audience.",
               color: "#7C3AED",
             },
             {
-              icon: "📡",
-              title: "Omnichannel Delivery",
-              desc: "Campaigns fire across 4 channels with probabilistic simulation of delivery, opens, clicks, and purchases.",
+              icon: Globe,
+              title: "Multi-Channel Delivery",
+              desc: "Reach your customers wherever they are through SMS, Email, WhatsApp, and RCS simultaneously.",
               color: "#2563EB",
             },
             {
-              icon: "📊",
-              title: "Live Analytics",
-              desc: "Watch the delivery funnel fill up in real-time. Revenue attributed, orders placed, and click rates update live.",
+              icon: BarChart,
+              title: "Real-Time Analytics",
+              desc: "Monitor your campaign performance, track revenue, and measure engagement as it happens.",
               color: "#059669",
             },
             {
-              icon: "🔁",
-              title: "Auto Retry Logic",
-              desc: "Failed deliveries? The agent detects them and autonomously launches a retry campaign on an alternate channel.",
+              icon: RefreshCcw,
+              title: "Automated Follow-Ups",
+              desc: "Automatically retry failed deliveries or send follow-up messages to unengaged customers.",
               color: "#D97706",
             },
           ].map(f => (
@@ -251,13 +252,14 @@ export default async function LandingPage() {
               transition: "box-shadow 0.2s",
             }}>
               <div style={{
-                width: 48, height: 48, borderRadius: 12, fontSize: 22,
-                background: `${f.color}15`,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                marginBottom: 16,
-              }}>{f.icon}</div>
-              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f0a1e", marginBottom: 8 }}>{f.title}</h3>
-              <p style={{ fontSize: 14, color: "#6b7280", lineHeight: 1.65 }}>{f.desc}</p>
+                width: 44, height: 44, borderRadius: 12,
+                background: `${f.color}15`, display: "flex", alignItems: "center", justifyContent: "center",
+                marginBottom: 20
+              }}>
+                <f.icon size={22} color={f.color} />
+              </div>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: "#0f0a1e", marginBottom: 10 }}>{f.title}</h3>
+              <p style={{ fontSize: 14, color: "#6b7280", lineHeight: 1.6 }}>{f.desc}</p>
             </div>
           ))}
         </div>
