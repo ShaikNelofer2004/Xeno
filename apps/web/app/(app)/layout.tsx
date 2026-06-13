@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
@@ -23,13 +24,18 @@ const NAV = [
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
     <div style={{ display: "flex", minHeight: "100vh" }}>
       {/* Sidebar */}
-      <aside className="sidebar">
+      <aside className="sidebar" style={{ width: collapsed ? 72 : 240, transition: "width 0.3s ease", overflow: "hidden", padding: collapsed ? "24px 12px" : "24px 16px" }}>
         {/* Logo */}
-        <div className="sidebar-logo">
+        <div 
+          className="sidebar-logo" 
+          onClick={() => setCollapsed(!collapsed)}
+          style={{ cursor: "pointer", margin: collapsed ? "0 auto 32px" : "0 0 32px 0", justifyContent: collapsed ? "center" : "flex-start", transition: "all 0.3s ease" }}
+        >
           <div
             style={{
               width: 36,
@@ -44,7 +50,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           >
             <img src="/logo.png" alt="Xeno Logo" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </div>
-          <div>
+          <div style={{ opacity: collapsed ? 0 : 1, width: collapsed ? 0 : "auto", overflow: "hidden", transition: "all 0.2s ease", whiteSpace: "nowrap" }}>
             <div style={{ fontWeight: 700, fontSize: 15, color: "var(--color-text-primary)" }}>XenoCRM</div>
             <div style={{ fontSize: 11, color: "var(--color-text-muted)" }}>
               <Coffee size={10} style={{ display: "inline", marginRight: 3 }} />
@@ -62,9 +68,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 key={href}
                 href={href}
                 className={`sidebar-nav-item ${active ? "active" : ""}`}
+                style={{ justifyContent: collapsed ? "center" : "flex-start", padding: collapsed ? "10px" : "10px 12px" }}
               >
-                <Icon size={16} />
-                {label}
+                <Icon size={16} style={{ flexShrink: 0 }} />
+                <span style={{ opacity: collapsed ? 0 : 1, width: collapsed ? 0 : "auto", overflow: "hidden", transition: "all 0.2s ease", whiteSpace: "nowrap" }}>
+                  {label}
+                </span>
               </Link>
             );
           })}
@@ -73,7 +82,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Main */}
-      <main className="main-content" style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <main className="main-content" style={{ flex: 1, display: "flex", flexDirection: "column", marginLeft: collapsed ? 72 : 240, transition: "margin-left 0.3s ease" }}>
         {/* Top Header */}
         <header style={{
           display: "flex",
