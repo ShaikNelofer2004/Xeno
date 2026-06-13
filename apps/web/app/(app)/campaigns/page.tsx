@@ -122,7 +122,7 @@ function GenerateReportModal({ allCampaigns, onClose }: { allCampaigns: Campaign
 
   return (
     <>
-      <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "transparent", backdropFilter: "blur(4px)", zIndex: 50, animation: "fadeIn 0.2s ease" }} />
+      <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "transparent", zIndex: 50, animation: "fadeIn 0.2s ease" }} />
       <div style={{ position: "fixed", top: 0, right: 0, bottom: 0, width: "min(900px, 94vw)", background: "var(--color-surface)", borderLeft: "1px solid var(--color-border)", zIndex: 60, overflowY: "auto", boxShadow: "-12px 0 60px rgba(0,0,0,0.15)", animation: "slideInPanel 0.28s ease", display: "flex", flexDirection: "column" }}>
 
         {/* Header */}
@@ -416,7 +416,7 @@ function CompareModal({ ids, campaigns, onClose }: { ids: string[]; campaigns: C
 
   return (
     <>
-      <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "transparent", backdropFilter: "blur(4px)", zIndex: 50, animation: "fadeIn 0.2s ease" }} />
+      <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "transparent", zIndex: 50, animation: "fadeIn 0.2s ease" }} />
       <div style={{
         position: "fixed", top: 0, right: 0, bottom: 0,
         width: "min(820px, 90vw)",
@@ -635,7 +635,7 @@ function CampaignFormModal({
   const insertVar = (v: string) => setTemplate(t => t + `{${v}}`);
 
   return (
-    <div style={{ position: "fixed", inset: 0, background: "transparent", backdropFilter: "blur(4px)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+    <div style={{ position: "fixed", inset: 0, background: "transparent", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
       <div style={{ background: "var(--color-surface)", borderRadius: 20, width: "100%", maxWidth: 560, boxShadow: "0 24px 80px rgba(0,0,0,0.25)", display: "flex", flexDirection: "column", maxHeight: "90vh" }}>
         {/* Header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 24px", borderBottom: "1px solid var(--color-border)" }}>
@@ -747,7 +747,7 @@ function ConfirmModal({
   loading: boolean; onClose: () => void; onConfirm: () => void;
 }) {
   return (
-    <div style={{ position: "fixed", inset: 0, background: "transparent", backdropFilter: "blur(4px)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+    <div style={{ position: "fixed", inset: 0, background: "transparent", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
       <div style={{ background: "var(--color-surface)", borderRadius: 20, width: "100%", maxWidth: 420, boxShadow: "0 24px 80px rgba(0,0,0,0.25)", overflow: "hidden" }}>
         <div style={{ padding: "24px 24px 16px" }}>
           <div style={{ width: 48, height: 48, borderRadius: "50%", background: isDanger ? "rgba(239,68,68,0.1)" : "rgba(16,185,129,0.1)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
