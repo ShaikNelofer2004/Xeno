@@ -20,35 +20,61 @@ The CRM uses a **Gemini ReAct Agent** to reason, segment the audience, draft per
 
 ---
 
-## 🏗️ System Architecture & Services
+## 🏗️ Detailed System Architecture
 
-The project is structured as an npm monorepo:
+XenoCRM operates on a decoupled, microservice-inspired monorepo architecture. This design cleanly separates the user interface, the core business logic, and external integrations.
 
-### 1. `apps/web/` — Frontend Web App
-* **Stack:** Next.js 14, Tailwind CSS, Clerk Auth, Lucide Icons.
-* **Purpose:** The main user interface for the CRM. Offers a Dashboard, Audience Manager, interactive Campaign Builder, live delivery funnels, and an AI chat interface.
-* **Read more:** `apps/web/README.md`
+### 1. The Frontend Application (`apps/web/`)
+* **Technology:** Next.js 14 App Router, React, Tailwind CSS, Clerk Authentication.
+* **Role:** Acts as the primary control surface for the marketer. 
+* **Key Components:**
+  * **Real-time Dashboards:** Utilizes `recharts` to render live RFM metrics and funnel performance.
+  * **Agent Interface:** Implements an `EventSource` connection to stream Server-Sent Events (SSE) from the backend, parsing and rendering the Agent's thought logs natively as they are emitted.
+  * **Campaign Wizard:** A multi-step complex state machine that guides users through manual campaign creation.
+* **Data Fetching:** Relies strictly on client-side and server-side HTTP calls to the Core API Backend. It does not speak directly to the database.
 
-### 2. `apps/api/` — Core Backend API
-* **Stack:** Express.js, TypeScript, PostgreSQL (Supabase), Gemini SDK.
-* **Purpose:** Handles campaign creation, database queries, webhook processing, and hosts the autonomous Gemini ReAct loop.
-* **API Routes (Summary):**
-  * `/api/customers` - Data ingestion & retrieval
-  * `/api/segments` - Audience segmentation logic
-  * `/api/campaigns` - Campaign CRUD and launching (`/send`)
-  * `/api/agent` - Autonomous reasoning & live streaming (`/stream/:runId`)
-  * `/api/receipt` - The primary webhook endpoint.
-* **Read more:** `apps/api/README.md`
+### 2. The Core API Backend (`apps/api/`)
+* **Technology:** Node.js, Express, TypeScript, Supabase/PostgreSQL.
+* **Role:** The brain of the operation. It orchestrates all business logic and houses the Gemini ReAct agent.
+* **Key Responsibilities:**
+  * **Audience Engine:** Converts JSON filter rules into complex PostgreSQL queries (using Supabase). Evaluates recency, frequency, and monetary parameters dynamically.
+  * **Campaign Dispatcher:** When a campaign launches, the backend generates unique communication records for every targeted user, binds personalized variables, and chunks the HTTP payloads dispatched to the Vendor Stub.
+  * **Webhook Processor:** Implements strict validation and state-machine transitions for incoming webhooks on `/api/receipt`.
 
-### 3. `apps/stub/` — Vendor Delivery Stub
-* **Stack:** Express.js, TypeScript
-* **Purpose:** An external vendor simulator perfectly mimicking delivery networks (Twilio, WhatsApp API). Introduces jitter, simulates probabilistic funnels (delivered, bounced, read), and asynchronously fires webhooks back to the CRM API.
-* **API Routes (Summary):**
-  * `POST /send` - Receives massive outbound batches, returns 202 instantly, and processes webhooks in the background.
-* **Read more:** `apps/stub/README.md`
+### 3. The Vendor Stub Simulator (`apps/stub/`)
+* **Technology:** Node.js, Express, TypeScript.
+* **Role:** An isolated, mocked external network (similar to Twilio or SendGrid).
+* **Key Responsibilities:**
+  * **Asynchronous Processing:** Immediately accepts massive inbound payloads with a `202 Accepted` to prevent blocking the Core API.
+  * **Probabilistic Funnels:** Uses pseudo-random distribution to simulate realistic bounce rates (e.g. 10% failure) and engagement metrics (e.g. read/clicked ratios).
+  * **Network Jitter:** Implements randomized `setTimeout` delays between webhook callbacks to simulate network latency and unpredictable delivery times.
 
-### 4. `packages/shared/` — Shared Infrastructure
-* **Purpose:** Contains the shared PostgreSQL schema (`schema.sql`) and a robust data seed script (`seed.js`) that populates the DB with hundreds of generated customers, orders, and calculated RFM metrics.
+### 4. Shared Infrastructure (`packages/shared/`)
+* Contains the centralized SQL Schema definitions and a robust seeding pipeline that generates thousands of realistic customer rows with corresponding order histories.
+
+---
+
+## 🧠 Agent Architecture (Gemini ReAct Loop)
+
+The most advanced component of XenoCRM is the Autonomous Agent, built on the **ReAct (Reason + Act)** paradigm using the `@google/genai` SDK. It doesn't just execute predefined scripts; it "thinks" about the problem and dynamically chooses which tools to execute.
+
+### The ReAct Loop
+When the marketer submits a prompt, the Agent enters a `while(true)` loop inside `apps/api/src/agent/runner.ts`:
+1. **Observe State:** Evaluates the initial user prompt and previous conversational history.
+2. **Think:** The model outputs an internal monologue (e.g., *"I need to find customers who haven't bought in 60 days. I should use the `queryDatabase` tool first."*)
+3. **Act:** The model halts generation and requests a Tool Call.
+4. **Execute:** The Node.js backend intercepts the tool call, executes the requested function natively (e.g., querying Supabase), and appends the JSON result to the conversation context.
+5. **Repeat:** The model is invoked again with the new context. It evaluates if the goal is complete. If yes, it breaks the loop and returns a final response.
+
+### Custom Tool Repertoire
+The agent is equipped with highly specific, sandboxed tools:
+* `queryDatabase`: Allows the agent to run read-only analytical queries against the customer base to understand the data shape.
+* `createSegment`: The agent can define specific filter rules (e.g., `tier = 'Silver' AND last_order_days > 60`) to lock in an audience.
+* `draftMessage`: The agent generates personalized multi-channel copy using dynamic merge tags (e.g., `{name}`).
+* `launchCampaign`: Once the audience and message are finalized, the agent can autonomously trigger the dispatch pipeline.
+
+### Live Streaming (Server-Sent Events)
+To build trust, the Agent is entirely transparent. As the `while(true)` loop executes, the backend emits `chunk` events via SSE to the Next.js frontend. The user sees the agent typing its thoughts, visualizing loading states for tool executions, and finally presenting the completed campaign, all in real-time.
 
 ---
 
