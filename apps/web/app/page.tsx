@@ -186,7 +186,7 @@ export default async function LandingPage() {
         <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 32, textAlign: "center" }}>
           {[
             { value: "500+", label: "Customers Seeded" },
-            { value: "4", label: "Delivery Channels" },
+            { value: "5", label: "Delivery Channels" },
             { value: "95%", label: "Delivery Rate" },
             { value: "< 3s", label: "Simulation Speed" },
           ].map(s => (
