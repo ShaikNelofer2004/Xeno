@@ -15,7 +15,7 @@ sequenceDiagram
     participant API as CRM API
     participant Stub as Vendor Stub
     participant Background as Async Processor
-    participant Webhook as CRM Webhook (/api/receipt)
+    participant Webhook as CRM Webhook
 
     API->>Stub: POST /send (Batch of 500 recipients)
     Stub-->>API: 202 Accepted (Instant)

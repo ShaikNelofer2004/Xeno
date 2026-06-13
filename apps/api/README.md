@@ -22,7 +22,7 @@ graph TD
     Router --> Webhook(Receipt Webhooks)
 
     Camp -->|POST /send| Stub[(External Vendor Stub)]
-    Webhook <--|POST /receipt| Stub
+    Stub -->|POST /receipt| Webhook
     
     Agt -->|SSE Stream| Frontend([Next.js Frontend])
     Cust --> Frontend
