@@ -122,7 +122,7 @@ function GenerateReportModal({ allCampaigns, onClose }: { allCampaigns: Campaign
 
   return (
     <>
-      <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)", backdropFilter: "blur(4px)", zIndex: 50, animation: "fadeIn 0.2s ease" }} />
+      <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "transparent", backdropFilter: "blur(4px)", zIndex: 50, animation: "fadeIn 0.2s ease" }} />
       <div style={{ position: "fixed", top: 0, right: 0, bottom: 0, width: "min(900px, 94vw)", background: "var(--color-surface)", borderLeft: "1px solid var(--color-border)", zIndex: 60, overflowY: "auto", boxShadow: "-12px 0 60px rgba(0,0,0,0.15)", animation: "slideInPanel 0.28s ease", display: "flex", flexDirection: "column" }}>
 
         {/* Header */}
@@ -416,7 +416,7 @@ function CompareModal({ ids, campaigns, onClose }: { ids: string[]; campaigns: C
 
   return (
     <>
-      <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)", backdropFilter: "blur(4px)", zIndex: 50, animation: "fadeIn 0.2s ease" }} />
+      <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "transparent", backdropFilter: "blur(4px)", zIndex: 50, animation: "fadeIn 0.2s ease" }} />
       <div style={{
         position: "fixed", top: 0, right: 0, bottom: 0,
         width: "min(820px, 90vw)",

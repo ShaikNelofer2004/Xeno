@@ -69,7 +69,7 @@ function MembersPanel({ segment, onClose }: { segment: Segment; onClose: () => v
   return (
     <>
       {/* Backdrop */}
-      <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.25)", backdropFilter: "blur(3px)", zIndex: 40 }} />
+      <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "transparent", backdropFilter: "blur(3px)", zIndex: 40 }} />
 
       {/* Panel */}
       <div style={{

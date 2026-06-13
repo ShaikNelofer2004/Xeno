@@ -280,7 +280,7 @@ export default function CampaignWizard({
 
   /* ── Render ── */
   return (
-    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", backdropFilter: "blur(6px)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+    <div style={{ position: "fixed", inset: 0, background: "transparent", backdropFilter: "blur(6px)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
       <div style={{ background: "var(--color-surface)", borderRadius: 22, width: "100%", maxWidth: step === 3 ? 840 : 560, boxShadow: "0 32px 100px rgba(0,0,0,0.3)", display: "flex", flexDirection: "column", maxHeight: "92vh", transition: "max-width 0.35s cubic-bezier(0.16,1,0.3,1)" }}>
 
         {/* Header */}
