@@ -200,8 +200,8 @@ export default function AgentPage() {
           <div style={{ position: "absolute", top: -30, right: -30, width: 120, height: 120, borderRadius: "50%", background: "rgba(99,102,241,0.15)", filter: "blur(32px)", pointerEvents: "none" }} />
 
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, position: "relative" }}>
-            <div style={{ background: "linear-gradient(135deg, #6366f1, #a78bfa)", borderRadius: 12, padding: 9, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 14px rgba(99,102,241,0.35)", flexShrink: 0 }}>
-              <Bot size={18} color="#fff" />
+            <div style={{ width: 36, height: 36, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 14px rgba(99,102,241,0.35)", flexShrink: 0, overflow: "hidden" }}>
+              <img src="/logo.png" alt="Xeno Logo" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             </div>
             <div>
               <div style={{ fontSize: 15, fontWeight: 800, background: "linear-gradient(135deg, #6366f1, #a78bfa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
