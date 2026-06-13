@@ -240,6 +240,31 @@ function ConfirmModal({
   );
 }
 
+function AlertModal({
+  title, description, onClose
+}: {
+  title: string; description: string; onClose: () => void;
+}) {
+  return (
+    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", backdropFilter: "blur(4px)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+      <div style={{ background: "var(--color-surface)", borderRadius: 20, width: "100%", maxWidth: 420, boxShadow: "0 24px 80px rgba(0,0,0,0.25)", overflow: "hidden" }}>
+        <div style={{ padding: "24px 24px 16px" }}>
+          <div style={{ width: 48, height: 48, borderRadius: "50%", background: "rgba(239,68,68,0.1)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
+            <X size={24} color="#ef4444" />
+          </div>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: "var(--color-text-primary)", marginBottom: 8 }}>{title}</h2>
+          <p style={{ fontSize: 13, color: "var(--color-text-secondary)", lineHeight: 1.5 }}>{description}</p>
+        </div>
+        <div style={{ padding: "16px 24px", background: "var(--color-surface-2)", display: "flex", justifyContent: "flex-end", gap: 10 }}>
+          <button onClick={onClose} style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: 10, padding: "8px 24px", fontSize: 13, fontWeight: 700, color: "var(--color-text-primary)", cursor: "pointer" }}>
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Segment Form Modal ────────────────────────────────────────── */
 interface Rule { id: string; field: string; operator: string; value: string; }
 
@@ -560,6 +585,7 @@ export default function SegmentsPage() {
   const [editTarget, setEditTarget] = useState<Segment | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Segment | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [errorAlert, setErrorAlert] = useState<string | null>(null);
 
   const fetchSegments = useCallback(() => {
     setLoading(true);
@@ -580,7 +606,8 @@ export default function SegmentsPage() {
       setSegments(prev => prev.filter(s => s.id !== deleteTarget.id));
       setDeleteTarget(null);
     } catch (err: any) {
-      alert(err.message || "Failed to delete segment");
+      setDeleteTarget(null);
+      setErrorAlert(err.message || "Failed to delete segment");
     } finally {
       setDeleting(false);
     }
@@ -774,6 +801,14 @@ export default function SegmentsPage() {
           loading={deleting}
           onClose={() => setDeleteTarget(null)}
           onConfirm={handleDelete}
+        />
+      )}
+
+      {errorAlert && (
+        <AlertModal
+          title="Cannot Delete Segment"
+          description={errorAlert}
+          onClose={() => setErrorAlert(null)}
         />
       )}
     </div>
