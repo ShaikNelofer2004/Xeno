@@ -67,5 +67,24 @@ npm run dev
 
 ## 📂 Architecture Notes
 
+```mermaid
+graph TD
+    Client([Marketer Browser]) -->|HTTP / SSE| NextRouter[Next.js App Router]
+    
+    subgraph Frontend Architecture
+        NextRouter --> Layout[Global Layout / Clerk Auth]
+        Layout --> Dashboard[Dashboard Views]
+        Layout --> Wizard[Campaign Wizard]
+        Layout --> AgentUI[Agent Chat UI]
+        
+        AgentUI -->|EventSource| SSEClient[SSE Parser]
+        Wizard --> FetchClient[lib/api.ts Client]
+        Dashboard --> FetchClient
+    end
+    
+    FetchClient -->|REST API| Backend([Core API Backend])
+    SSEClient -->|Stream| Backend
+```
+
 * **`app/(app)/`**: All authenticated routes are grouped inside this route group. The layout enforces Clerk authentication and renders the global sidebar navigation.
 * **`lib/api.ts`**: A centralized, type-safe wrapper around the native browser `fetch` API. It handles JSON parsing, error throwing, and prepending the backend API base URL automatically.

@@ -10,6 +10,37 @@ This **Stub** perfectly mimics that behavior locally, allowing us to test the en
 
 ## 🌟 Key Features
 
+```mermaid
+sequenceDiagram
+    participant API as CRM API
+    participant Stub as Vendor Stub
+    participant Background as Async Processor
+    participant Webhook as CRM Webhook (/api/receipt)
+
+    API->>Stub: POST /send (Batch of 500 recipients)
+    Stub-->>API: 202 Accepted (Instant)
+    
+    Stub->>Background: Queue 500 messages
+    
+    loop Every 50 recipients
+        Background->>Background: Wait 100ms (Staggering)
+        
+        loop For each recipient
+            Background->>Webhook: POST /api/receipt (Status: SENT)
+            
+            alt Probabilistic Failure (10%)
+                Background->>Webhook: POST /api/receipt (Status: FAILED)
+            else Success Path (90%)
+                Background->>Webhook: POST /api/receipt (Status: DELIVERED)
+                Background->>Background: Random Jitter Delay
+                Background->>Webhook: POST /api/receipt (Status: OPENED/READ)
+                Background->>Background: Random Jitter Delay
+                Background->>Webhook: POST /api/receipt (Status: CLICKED)
+            end
+        end
+    end
+```
+
 ### 1. **Batching & Staggering**
 When the CRM launches a campaign for 500 customers, it hits the Stub with a single large payload. 
 To prevent overwhelming the CRM with 500 simultaneous webhook callbacks, the Stub buffers the recipients and processes them in **batches of 50**. It staggers the delivery of each batch using `setTimeout` to mimic realistic network latency and rate-limiting constraints.

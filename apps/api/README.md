@@ -12,6 +12,30 @@ This is the central Express.js backend for XenoCRM. It is responsible for orches
 
 ## 🌟 Key Responsibilities
 
+```mermaid
+graph TD
+    API[Express.js App] --> Router[API Routers]
+    Router --> Cust(Customers)
+    Router --> Seg(Segments)
+    Router --> Camp(Campaigns)
+    Router --> Agt(Agent)
+    Router --> Webhook(Receipt Webhooks)
+
+    Camp -->|POST /send| Stub[(External Vendor Stub)]
+    Webhook <--|POST /receipt| Stub
+    
+    Agt -->|SSE Stream| Frontend([Next.js Frontend])
+    Cust --> Frontend
+    Camp --> Frontend
+    Seg --> Frontend
+
+    Agt -->|Calls Tools| Tools{ReAct Tools}
+    Tools --> DB[(Supabase Postgres)]
+    Cust --> DB
+    Seg --> DB
+    Camp --> DB
+```
+
 ### 1. **Data Ingestion & Management**
 Provides RESTful endpoints (`/api/customers`) to ingest and retrieve customer data. Handles complex dynamic queries via Supabase to filter customers by tier, order count, and recency.
 
