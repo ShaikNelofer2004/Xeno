@@ -74,7 +74,7 @@ export default async function LandingPage() {
           </div>
 
           <h1 style={{ fontSize: 52, fontWeight: 900, lineHeight: 1.1, letterSpacing: "-1.5px", marginBottom: 20, color: "#0f0a1e" }}>
-            Automate your CRM<br />
+            Automate your CRM{' '}
             <span style={{ background: "linear-gradient(135deg, #6D28D9, #4F46E5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
               marketing with AI
             </span>
