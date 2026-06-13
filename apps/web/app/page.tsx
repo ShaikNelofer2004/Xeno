@@ -20,10 +20,9 @@ export default async function LandingPage() {
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{
               width: 36, height: 36, borderRadius: 10,
-              background: "linear-gradient(135deg, #6D28D9, #4F46E5)",
-              display: "flex", alignItems: "center", justifyContent: "center",
+              display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden",
               fontSize: 18, boxShadow: "0 4px 14px rgba(109,40,217,0.35)"
-            }}>🤖</div>
+            }}><img src="/logo.png" alt="Xeno Logo" style={{ width: "100%", height: "100%", objectFit: "cover" }} /></div>
             <span style={{ fontWeight: 800, fontSize: 20, letterSpacing: "-0.5px", color: "#0f0a1e" }}>XenoCRM</span>
           </div>
 
@@ -314,9 +313,9 @@ export default async function LandingPage() {
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <div style={{
               width: 28, height: 28, borderRadius: 8,
-              background: "linear-gradient(135deg, #6D28D9, #4F46E5)",
-              display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14,
-            }}>🤖</div>
+              display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden",
+              fontSize: 14
+            }}><img src="/logo.png" alt="Xeno Logo" style={{ width: "100%", height: "100%", objectFit: "cover" }} /></div>
             <span style={{ fontWeight: 700, color: "#0f0a1e", fontSize: 15 }}>XenoCRM</span>
           </div>
           <p style={{ fontSize: 13, color: "#9ca3af" }}>Built for Xeno Engineering Internship Assignment · 2026</p>

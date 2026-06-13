@@ -35,15 +35,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               width: 36,
               height: 36,
               borderRadius: 10,
-              background: "linear-gradient(135deg, #6366f1, #a78bfa)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 18,
               flexShrink: 0,
+              overflow: "hidden",
             }}
           >
-            <Bot size={20} color="#fff" />
+            <img src="/logo.png" alt="Xeno Logo" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </div>
           <div>
             <div style={{ fontWeight: 700, fontSize: 15, color: "var(--color-text-primary)" }}>XenoCRM</div>
