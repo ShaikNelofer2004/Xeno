@@ -27,33 +27,33 @@ XenoCRM operates on a decoupled, microservice-inspired monorepo architecture. Th
 ```mermaid
 graph TD
     %% External Actors
-    User([Marketer])
+    User(["Marketer"])
     
     %% Frontend Layer
     subgraph apps/web ["Frontend (Next.js 14)"]
-        Dashboard[Dashboard & UI]
-        Chat[Agent Chat Interface]
-        SSEClient[SSE Stream Parser]
+        Dashboard["Dashboard & UI"]
+        Chat["Agent Chat Interface"]
+        SSEClient["SSE Stream Parser"]
     end
     
     %% Core Backend Layer
     subgraph apps/api ["Core API Backend (Express)"]
-        Router[API Routers]
+        Router["API Routers"]
         
         %% Agent Sub-layer
-        subgraph Agent Layer
-            ReAct[Gemini 1.5 ReAct Loop]
-            Tools{Local Tool Registry}
-            Streamer[SSE Event Emitter]
+        subgraph AgentLayer ["Agent Layer"]
+            ReAct["Gemini 1.5 ReAct Loop"]
+            Tools{"Local Tool Registry"}
+            Streamer["SSE Event Emitter"]
             
             ReAct -->|Executes| Tools
             ReAct -->|Yields Thoughts| Streamer
         end
         
         %% Orchestration & Logic
-        AudienceEngine[Audience & Segmentation Engine]
-        Dispatcher[Campaign Dispatcher (Chunking)]
-        WebhookParser[Idempotent Webhook State Machine]
+        AudienceEngine["Audience & Segmentation Engine"]
+        Dispatcher["Campaign Dispatcher (Chunking)"]
+        WebhookParser["Idempotent Webhook State Machine"]
         
         Router --> AudienceEngine
         Router --> Dispatcher
@@ -63,17 +63,17 @@ graph TD
     
     %% External Stub Layer
     subgraph apps/stub ["Vendor Delivery Stub"]
-        Ingestion[POST /send (Fire & Forget)]
-        Queue[Staggered Background Queue]
-        ProbFunnel[Probabilistic Funnel Simulator]
+        Ingestion["POST /send (Fire & Forget)"]
+        Queue["Staggered Background Queue"]
+        ProbFunnel["Probabilistic Funnel Simulator"]
         
         Ingestion -->|202 Accepted| Queue
         Queue -->|100ms Delay| ProbFunnel
     end
     
     %% Database Layer
-    subgraph packages/shared ["Data Layer"]
-        DB[(Supabase PostgreSQL)]
+    subgraph shared ["Data Layer"]
+        DB[("Supabase PostgreSQL")]
     end
     
     %% Connections
