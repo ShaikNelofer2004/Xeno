@@ -10,7 +10,7 @@ The CRM uses a **Gemini ReAct Agent** to reason, segment the audience, draft per
 
 ## 🌟 Key Features
 
-1. **Autonomous ReAct Loop:** Gemini 1.5 Flash agent that reasons, acts, and observes using custom function-calling tools.
+1. **Autonomous ReAct Loop:** Gemini 3 Flash agent that reasons, acts, and observes using custom function-calling tools.
 2. **Live SSE Streaming:** The frontend streams the agent's "thought process" live via Server-Sent Events, so the marketer can watch the AI work in real-time.
 3. **Idempotent Delivery Webhooks:** The CRM exposes a `/api/receipt` endpoint governed by a strict state-machine (Sent → Delivered → Opened → Clicked) that rejects out-of-order callbacks.
 4. **Vendor Channel Stub:** A fully separate Express service that simulates 4-channel delivery. It uses `setTimeout` to introduce probabilistic latency and enforces a 10% failure rate to simulate real-world bounce mechanics.
