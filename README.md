@@ -22,6 +22,8 @@ The CRM uses a **Gemini ReAct Agent** to reason, segment the audience, draft per
 
 ## 🏗️ Detailed System Architecture
 
+![System Architecture](./architecture.png)
+
 XenoCRM operates on a decoupled, microservice-inspired monorepo architecture. This design cleanly separates the user interface, the core business logic, and external integrations.
 
 ```mermaid
