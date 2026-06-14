@@ -22,79 +22,9 @@ The CRM uses a **Gemini ReAct Agent** to reason, segment the audience, draft per
 
 ## 🏗️ Detailed System Architecture
 
-![System Architecture](./architecture.png)
+![System Architecture](./architecture.jpeg)
 
 XenoCRM operates on a decoupled, microservice-inspired monorepo architecture. This design cleanly separates the user interface, the core business logic, and external integrations.
-
-```mermaid
-graph TD
-    %% External Actors
-    User(["Marketer"])
-    
-    %% Frontend Layer
-    subgraph apps/web ["Frontend (Next.js 14)"]
-        Dashboard["Dashboard & UI"]
-        Chat["Agent Chat Interface"]
-        SSEClient["SSE Stream Parser"]
-    end
-    
-    %% Core Backend Layer
-    subgraph apps/api ["Core API Backend (Express)"]
-        Router["API Routers"]
-        
-        %% Agent Sub-layer
-        subgraph AgentLayer ["Agent Layer"]
-            ReAct["Gemini 1.5 ReAct Loop"]
-            Tools{"Local Tool Registry"}
-            Streamer["SSE Event Emitter"]
-            
-            ReAct -->|Executes| Tools
-            ReAct -->|Yields Thoughts| Streamer
-        end
-        
-        %% Orchestration & Logic
-        AudienceEngine["Audience & Segmentation Engine"]
-        Dispatcher["Campaign Dispatcher (Chunking)"]
-        WebhookParser["Idempotent Webhook State Machine"]
-        
-        Router --> AudienceEngine
-        Router --> Dispatcher
-        Router --> WebhookParser
-        Router --> ReAct
-    end
-    
-    %% External Stub Layer
-    subgraph apps/stub ["Vendor Delivery Stub"]
-        Ingestion["POST /send (Fire & Forget)"]
-        Queue["Staggered Background Queue"]
-        ProbFunnel["Probabilistic Funnel Simulator"]
-        
-        Ingestion -->|202 Accepted| Queue
-        Queue -->|100ms Delay| ProbFunnel
-    end
-    
-    %% Database Layer
-    subgraph shared ["Data Layer"]
-        DB[("Supabase PostgreSQL")]
-    end
-    
-    %% Connections
-    User -->|Builds Campaigns| Dashboard
-    User -->|Sends Prompts| Chat
-    
-    Dashboard -->|REST API| Router
-    Chat -->|POST /run| Router
-    Streamer -->|Live SSE Stream| SSEClient
-    SSEClient -->|Renders live| Chat
-    
-    Tools -->|Queries & Inserts| DB
-    AudienceEngine -->|Complex SQL| DB
-    Dispatcher -->|Fetches Audiences| DB
-    WebhookParser -->|Updates Statuses| DB
-    
-    Dispatcher -->|Massive Payload| Ingestion
-    ProbFunnel -->|Async Webhooks| WebhookParser
-```
 
 ### 1. The Frontend Application (`apps/web/`)
 * **Technology:** Next.js 14 App Router, React, Tailwind CSS, Clerk Authentication.
