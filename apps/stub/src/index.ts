@@ -349,6 +349,17 @@ app.get('/health', (_req, res) => {
 app.listen(PORT, () => {
   console.log(`\n📡 ${C.bold}Channel Stub${C.reset} running on http://localhost:${PORT}`);
   console.log(`   Channels: 💬 WhatsApp  📱 SMS  📧 Email  ✨ RCS\n`);
+
+  // Mutual Keep-Alive: Ping the API every 10 minutes to prevent Render sleep
+  setInterval(() => {
+    const apiUrl = process.env.CRM_RECEIPT_URL;
+    if (apiUrl && apiUrl.includes('onrender.com')) {
+      const healthUrl = apiUrl.replace('/api/receipt', '/health');
+      fetch(healthUrl)
+        .then(() => console.log('💓 Keep-Alive Ping sent to API'))
+        .catch(() => {});
+    }
+  }, 10 * 60 * 1000);
 });
 
 export default app;

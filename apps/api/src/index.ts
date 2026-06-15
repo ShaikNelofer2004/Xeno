@@ -35,6 +35,16 @@ app.use('/api/agent', agentRoutes);
 
 app.listen(PORT, () => {
   console.log(` XenoCRM API running on http://localhost:${PORT}`);
+  
+  // Mutual Keep-Alive: Ping the Stub every 10 minutes to prevent Render sleep
+  setInterval(() => {
+    const stubUrl = process.env.STUB_URL;
+    if (stubUrl && stubUrl.includes('onrender.com')) {
+      fetch(`${stubUrl}/health`)
+        .then(() => console.log('💓 Keep-Alive Ping sent to Stub'))
+        .catch(() => {});
+    }
+  }, 10 * 60 * 1000);
 });
 
 export default app;
