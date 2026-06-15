@@ -209,7 +209,9 @@ campaignRoutes.post('/:id/send', async (req, res) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(stubPayload),
-    }).catch((err) => console.error('Stub call failed:', err.message));
+    })
+      .then((res) => res.text()) // Consume response to free socket
+      .catch((err) => console.error('Stub call failed:', err.message));
 
     res.json({
       message: 'Campaign launched',
