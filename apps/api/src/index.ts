@@ -34,7 +34,7 @@ app.use('/api/receipt', receiptRoutes);
 app.use('/api/agent', agentRoutes);
 
 app.listen(PORT, () => {
-  console.log(`🚀 XenoCRM API running on http://localhost:${PORT}`);
+  console.log(` XenoCRM API running on http://localhost:${PORT}`);
 });
 
 export default app;

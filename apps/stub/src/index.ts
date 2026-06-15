@@ -192,6 +192,10 @@ async function sendReceipt(
         order_value: orderValue,
       }),
     });
+    
+    // Consume the response to free the socket/memory
+    await res.text();
+    
     // Log the HTTP response code
     const statusCode = res.status;
     const codeColor = statusCode >= 200 && statusCode < 300 ? '\x1b[92m' : '\x1b[91m';
@@ -334,7 +338,7 @@ app.post('/send', async (req, res) => {
     );
     console.log('═'.repeat(72) + '\n');
     batchCounters.delete(batchId);
-  }, 40000);
+  }, 75000);
 });
 
 // Health check
