@@ -209,7 +209,6 @@ campaignRoutes.post('/:id/send', async (req, res) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(stubPayload),
-      signal: AbortSignal.timeout(180000) as any
     })
       .then((res) => res.text()) // Consume response to free socket
       .catch((err) => console.error('Stub call failed:', err.message));
