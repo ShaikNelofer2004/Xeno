@@ -190,7 +190,7 @@ async function sendReceipt(
         order_placed: orderPlaced,
         order_value: orderValue,
       }),
-      signal: AbortSignal.timeout(15000) as any
+      signal: AbortSignal.timeout(180000) as any
     });
     
     // Consume the response to free the socket/memory
