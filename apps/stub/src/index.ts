@@ -155,15 +155,8 @@ const CHANNEL_PROFILES: Record<Channel, {
   },
 };
 
-// ─── Helper: random int in range ─────────────────────────────────────────────
 const randMs = (range: [number, number]) =>
   Math.floor(Math.random() * (range[1] - range[0])) + range[0];
-
-import http from 'http';
-import https from 'https';
-
-const httpAgent = new http.Agent({ keepAlive: true, maxSockets: 20 });
-const httpsAgent = new https.Agent({ keepAlive: true, maxSockets: 20 });
 
 // ─── Send a receipt callback to the CRM ──────────────────────────────────────
 async function sendReceipt(
@@ -188,7 +181,6 @@ async function sendReceipt(
   );
 
   try {
-    const agent = crmUrl.startsWith('https') ? httpsAgent : httpAgent;
     const res = await fetch(crmUrl, {
       method,
       headers: { 'Content-Type': 'application/json' },
@@ -198,7 +190,6 @@ async function sendReceipt(
         order_placed: orderPlaced,
         order_value: orderValue,
       }),
-      agent,
       signal: AbortSignal.timeout(15000) as any
     });
     
