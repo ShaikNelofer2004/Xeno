@@ -355,6 +355,7 @@ app.listen(PORT, () => {
     if (apiUrl && apiUrl.includes('onrender.com')) {
       const healthUrl = apiUrl.replace('/api/receipt', '/health');
       fetch(healthUrl)
+        .then(res => res.text()) // Consume response to free socket
         .then(() => console.log('💓 Keep-Alive Ping sent to API'))
         .catch(() => {});
     }

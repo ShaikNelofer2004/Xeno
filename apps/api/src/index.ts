@@ -41,6 +41,7 @@ app.listen(PORT, () => {
     const stubUrl = process.env.STUB_URL;
     if (stubUrl && stubUrl.includes('onrender.com')) {
       fetch(`${stubUrl}/health`)
+        .then(res => res.text()) // Consume response to free socket
         .then(() => console.log('💓 Keep-Alive Ping sent to Stub'))
         .catch(() => {});
     }
